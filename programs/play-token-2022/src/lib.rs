@@ -12,6 +12,7 @@ declare_id!("97Ub6UZ63pcJBnvavLGG392k35PG51PcF3QJwGbgqt5n");
 
 #[program]
 pub mod play_token_2022 {
+
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
@@ -20,5 +21,9 @@ pub mod play_token_2022 {
 
     pub fn transfer(ctx: Context<TransferToken2022>, amount: u64) -> Result<()> {
         transfer_token_2022::handler_transfer(ctx, amount)
+    }
+
+    pub fn transfer_hook(ctx: Context<TransferHook>, amount: u64) -> Result<()> {
+        ctx.accounts.hanlder(amount)
     }
 }

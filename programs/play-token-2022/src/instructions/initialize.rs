@@ -99,7 +99,7 @@ pub fn handler(ctx: Context<Initialize>) -> Result<()> {
             &ctx.accounts.token_2022_program.key(),
             &ctx.accounts.mint.key(),
             Some(ctx.accounts.vault.key()),
-            None, // TO-DO: Add Transfer Hook
+            None, // Some(*ctx.program_id), // TO-DO: Add Transfer Hook
         )?,
         &vec![ctx.accounts.mint.to_account_info()],
     )?;
