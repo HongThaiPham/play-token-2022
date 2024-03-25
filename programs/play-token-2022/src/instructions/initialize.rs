@@ -7,7 +7,7 @@ use anchor_spl::{
             self,
             extension::{
                 metadata_pointer::instruction::initialize as initialize_metadata_pointer,
-                ExtensionType,
+                transfer_hook::instruction::initialize as intialize_transfer_hook, ExtensionType,
             },
             instruction::{initialize_mint2, AuthorityType},
             state::Mint,
@@ -60,7 +60,7 @@ pub fn handler(ctx: Context<Initialize>) -> Result<()> {
         // ExtensionType::MintCloseAuthority,
         // ExtensionType::PermanentDelegate,
         ExtensionType::MetadataPointer,
-        // ExtensionType::TransferHook,
+        ExtensionType::TransferHook,
     ])
     .unwrap();
 
@@ -91,6 +91,17 @@ pub fn handler(ctx: Context<Initialize>) -> Result<()> {
             ctx.accounts.signer.to_account_info(),
             ctx.accounts.mint.to_account_info(),
         ],
+    )?;
+
+    // 2.2: Transfer Hook,
+    invoke(
+        &intialize_transfer_hook(
+            &ctx.accounts.token_2022_program.key(),
+            &ctx.accounts.mint.key(),
+            Some(ctx.accounts.vault.key()),
+            None, // TO-DO: Add Transfer Hook
+        )?,
+        &vec![ctx.accounts.mint.to_account_info()],
     )?;
 
     invoke(
